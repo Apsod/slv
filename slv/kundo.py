@@ -4,7 +4,6 @@ import os
 import functools
 import logging
 
-KEY = os.environ.get('KUNDO')
 
 KUNDO = 'https://kundo.se'
 
@@ -109,6 +108,7 @@ if __name__ == '__main__':
     import tqdm
     
     #Example: extract all dialogs (question, answers - pairs) from kundo, and write to dump.json
+    KEY = os.environ.get('KUNDO')
     with Kundo(KEY, include_all=True) as kundo:
         with open('dump.json', 'wt') as handle:
                 for pair in tqdm.tqdm(kundo.get_dialogs()):
