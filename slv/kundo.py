@@ -3,7 +3,6 @@ import math
 import os
 import functools
 import logging
-from dataclasses import dataclass
 
 KEY = os.environ.get('KUNDO')
 
@@ -11,10 +10,6 @@ KUNDO = 'https://kundo.se'
 
 def mkpath(*parts):
     return '/'.join(parts)
-
-def emptyGenerator():
-    if False:
-        yield None
 
 class SizedGenerator(object):
     def __init__(self, length, f):
@@ -29,6 +24,15 @@ class SizedGenerator(object):
         assert not self.consumed, "SizedGenerator can only be run once!"
         self.consumed = True
         return self.f()
+
+    @staticmethod
+    def empty():
+
+        def generator():
+            if False:
+                yield None
+
+        return SizedGenerator(0, generator)
 
 
 class Kundo(object):
@@ -65,7 +69,7 @@ class Kundo(object):
                     yield from response.json()
             return SizedGenerator(total, g)
         else:
-            return SizedGenerator(0, emptyGenerator)
+            return SizedGenerator.empty()
 
     
     def get_taglist(self):
@@ -103,14 +107,8 @@ class Kundo(object):
 if __name__ == '__main__':
     import json
     import tqdm
-    from slv.util.tags import TAGS
-    def f():
-        yield 1
-        yield 2
-        yield 3
-
-    xs = SizedGenerator(3, f)
-
+    
+    #Example: extract all dialogs (question, answers - pairs) from kundo, and write to dump.json
     with Kundo(KEY, include_all=True) as kundo:
         with open('dump.json', 'wt') as handle:
                 for pair in tqdm.tqdm(kundo.get_dialogs()):
