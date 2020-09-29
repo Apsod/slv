@@ -8,5 +8,6 @@ TAGS = dict(
         F = "f corona buffé",
         G = "g avsvalning och förvaring",
         H = "h tonfisk gravid",
-        I = "i ost gravid"
+        I = "i ost gravid",
+        J = "j märkning glutenfri"
 )
