@@ -101,17 +101,3 @@ class Kundo(object):
 
     def __exit__(self, *args):
         self.session.close()
-
-
-if __name__ == '__main__':
-    import json
-    import tqdm
-    from slv.util.tags import TAGS
-    
-    #Example: extract all dialogs (question, answers - pairs) from kundo, and write to dump.json
-    KEY = os.environ.get('KUNDO')
-    with Kundo(KEY, include_all=True) as kundo:
-        for group, tag in TAGS.items():
-            with open('{}.json'.format(group), 'wt') as handle:
-                for doc in kundo.get_tagged(tag):
-                    handle.write(json.dumps(doc))
