@@ -19,6 +19,7 @@ class ExpMean(object):
 
     def __iadd__(self, other):
         self.mean += (other - self.mean) * self.alpha
+        return self
 
 
 class WelfordMean(object):
@@ -33,4 +34,5 @@ class WelfordMean(object):
         else:
             self.weight += 1
             self.mean += (other - self.mean) / self.weight
+        return self
 

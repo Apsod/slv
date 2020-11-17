@@ -1,12 +1,16 @@
-import torch
+import argparse
+import sys
 import json
+
 import tqdm
+import torch
+
 from slv.matcher.data import KundoData, mk_loader
 from slv.matcher.model import QA_model
 from slv.matcher.util import mk_batch2device
 
 def _embed(sp):
-    parser = sp.add_subparser('embed')
+    parser = sp.add_parser('embed')
     parser.add_argument(
             '--model_path',
             type=str)
@@ -27,10 +31,14 @@ def _embed(sp):
             default=2,
             type=int
             )
+    parser.add_argument(
+            '--out',
+            default=sys.stdout,
+            type=argparse.FileType('xt'))
 
     
     def go(args):
-        model, tokenizer = QA_model.load(model_path)
+        model, tokenizer = QA_model.load(args.model_path)
         model.to(args.device)
 
         dataset = KundoData(args.data_path)
@@ -48,28 +56,33 @@ def _embed(sp):
 
         it = tqdm.tqdm(dl)
 
-        q_json = open('questions.json', 'wt')
-        a_json = open('answers.json', 'wt')
+        def decode(ixs):
+            return tokenizer.decode(ixs, skip_special_tokens=True, spaces_between_special_tokens=False)
 
         with torch.no_grad():
             for batch in map(to_device, it):
                 (q, a) = batch
+                qis = q[0]
+                ais = a[0]
 
-                qe = model.generate_left(q)
+                qes = model.generate_left(q)
+                aes = model.generate_right(a)
 
-                for emb, ix in zip(qe, qi):
-                    doc = {}
-                    doc['embedding'] = emb.tolist()
-                    doc['question'] = tokenizer.decode(ix, skip_special_tokens=True, spaces_between_special_tokens=False)
-                    q_json.write(json.dumps(doc))
-                    q_json.write('\n')
-
-                ae = model.generate_right(a)
-
-                for emb, ix in zip(ae, ai):
-                    doc = {}
-                    doc['embedding'] = emb.tolist()
-                    doc['answer'] = tokenizer.decode(ix, skip_special_tokens=True, spaces_between_special_tokens=False)
-                    a_json.write(json.dumps(doc))
-                    a_json.write('\n')
+                for qe, qt, ae, at in zip(
+                        map(lambda x: x.tolist(), qes), 
+                        map(decode, qis), 
+                        map(lambda x: x.tolist(), aes),
+                        map(decode, ais)):
+                    doc = {
+                            'question': {
+                                'embeddings': qe,
+                                'text': qt,
+                            },
+                            'answer': {
+                                'embeddings': ae,
+                                'text': at,
+                            }
+                        }
+                    args.out.write(json.dumps(doc))
+                    args.out.write('\n')
     parser.set_defaults(go=go)

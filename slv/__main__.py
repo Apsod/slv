@@ -80,7 +80,7 @@ def __main__():
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
     _get(subparsers)
-    _train(subparsers)
+    _model(subparsers)
 
     args = parser.parse_args()
     args.go(args)

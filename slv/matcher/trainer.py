@@ -11,7 +11,7 @@ from slv.matcher.util import ExpMean, WelfordMean, mk_batch2device
 
 
 def _train(sp):
-    parser = sp.add_subparser('train')
+    parser = sp.add_parser('train')
     parser.add_argument(
             '--model_path',
             default='KB/bert-base-swedish-cased',

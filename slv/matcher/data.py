@@ -29,19 +29,18 @@ class KundoData(torch.utils.data.Dataset):
         self.answer = []
         with open(path, 'rt') as handle:
             for doc in filter(keep, map(json.loads, handle)):
-                title = strip_tags(doc['question']['title'])
-                question = strip_tags(doc['question']['text'])
-                answer = strip_tags(doc['answers'])
+                #title = strip_tags(doc['question']['title'])
+                question = doc['question']['text']
+                answer = doc['answers']
                 if len(answer) == 1:
-                    self.question.append(question)
-                    self.answer.append(answer[0]['text'])
+                    self.question.append(strip_tags(question))
+                    self.answer.append(strip_tags(answer[0]['text']))
     
     def __len__(self):
         return len(self.question)
 
     def __getitem__(self, ix):
         return self.question[ix], self.answer[ix]
-
 
 def mk_loader(tokenizer, pair_ds, max_len=512, batch_size=32, pin_memory=True, shuffle=True, num_workers=4):
         def encode(texts):
