@@ -1,6 +1,9 @@
 
 
 def mk_batch2device(device):
+    """
+    Small utility function for loading batch-data to correct device
+    """
 
     def to_device(batch):
         q, a = batch
@@ -13,6 +16,9 @@ def mk_batch2device(device):
 
 
 class ExpMean(object):
+    """
+    Class for calculating an online exponential mean
+    """
     def __init__(self, mean=0.0, alpha=0.95):
         self.mean = mean
         self.alpha = alpha
@@ -23,6 +29,9 @@ class ExpMean(object):
 
 
 class WelfordMean(object):
+    """
+    Class for calculating an online weighted mean
+    """
     def __init__(self, mean=0.0, weight=0.0):
         self.mean = mean
         self.weight = weight

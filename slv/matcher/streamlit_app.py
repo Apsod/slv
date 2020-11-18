@@ -45,16 +45,35 @@ def get_embeddings():
 
     return a_m, tuple(answers), q_m, tuple(questions)
 
+
 def cos_sim(q, M):
+    """
+    q : D
+    M : M x D
+    returns : M 
+    Computes the Cosine Similarity between vector q, and all vectors in M
+    """
     qn = q.pow(2).sum()
     Mn = M.pow(2).sum(1)
 
     return (M @ q) / (qn * Mn).sqrt()
 
 def sm_sim(q, M):
+    """
+    q : D
+    M : M x D
+    returns : M 
+    Computes the dot product, followed by softmax between vector q, and all vectors in M.
+    I.e. the distribution we aim to model using Noise Contrastive Estimation or Negative Sampling.
+    """
     return torch.softmax(M @ q, 0)
 
 def get_topk(scores, items, k):
+    """
+    given a 1d tensor of scores, and a list of corresponding items, returns a dictionary
+    {'scores': [s1, s2, s3, ..], 'text': [x1, x2, x3, ...]}, where s1 is the highest score, 
+    and x1 is the corresponding item, s2 the second highest, and so on.
+    """
     vals, ixs = zip(*[(val.item(), items[ix]) for val, ix in zip(*scores.topk(k))])
     return {'score': vals, 'text': ixs}
 

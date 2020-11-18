@@ -38,9 +38,11 @@ def _embed(sp):
 
     
     def go(args):
+        ### Load the model ###
         model, tokenizer = QA_model.load(args.model_path)
         model.to(args.device)
-
+        
+        ### Load the Data ### 
         dataset = KundoData(args.data_path)
 
         batch_size = args.batch_size
@@ -53,11 +55,14 @@ def _embed(sp):
         
 
         to_device = mk_batch2device(args.device)
+        
 
         it = tqdm.tqdm(dl)
 
         def decode(ixs):
             return tokenizer.decode(ixs, skip_special_tokens=True, spaces_between_special_tokens=False)
+        
+        ### Run the model over the data, and write the results to disk ###
 
         with torch.no_grad():
             for batch in map(to_device, it):

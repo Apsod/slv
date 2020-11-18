@@ -5,6 +5,9 @@ from html.parser import HTMLParser
 import torch
 
 class MLStripper(HTMLParser):
+    """
+    Class for stripping away HTML stuff.
+    """
     def __init__(self):
         super().__init__()
         self.reset()
@@ -19,17 +22,24 @@ class MLStripper(HTMLParser):
         return self.text.getvalue()
 
 def strip_tags(html):
+    """
+    Function which takes a string and returns a string
+    without html tags such as <br>.
+    """
     s = MLStripper()
     s.feed(html)
     return s.get_data()
 
 class KundoData(torch.utils.data.Dataset):
+    """
+    Torch dataset. Reads in a Kundo json file, and retains all
+    questions which have one (and only one) answer.
+    """
     def __init__(self, path, keep=lambda x: True):
         self.question = []
         self.answer = []
         with open(path, 'rt') as handle:
             for doc in filter(keep, map(json.loads, handle)):
-                #title = strip_tags(doc['question']['title'])
                 question = doc['question']['text']
                 answer = doc['answers']
                 if len(answer) == 1:
@@ -43,6 +53,9 @@ class KundoData(torch.utils.data.Dataset):
         return self.question[ix], self.answer[ix]
 
 def mk_loader(tokenizer, pair_ds, max_len=512, batch_size=32, pin_memory=True, shuffle=True, num_workers=4):
+    """
+    Utiliyu function to make a torch dataloader given a toenizer and a KundoData dataset.
+    """
         def encode(texts):
             batch = tokenizer.batch_encode_plus(
                     texts,

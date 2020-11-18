@@ -1,19 +1,29 @@
+"""
+Main module, defining all slv entrypoints.
+"""
+
 import argparse
 import json
-import tqdm
 import sys
 import os
+
+import tqdm
+
 from slv.matcher.trainer import _train
 from slv.matcher.embed import _embed
 from slv.kundo import Kundo
 from slv import TAG_SET
 
 def is_train(doc):
+    """
+    Checks whether the document is tagged with one of the special tags, e.g. "o import animaliska", in which case it should not be part of the training set. 
+    """
     try:
         tags = set(doc['question']['extras']['tags'])
         return tags.isdisjoint(TAG_SET)
     except KeyError:
         return True
+
 
 def _get_split(sp):
     parser = sp.add_parser('split', help='Get ALL data from Kundo, split into train and test data-sets (test sets contains tagged documents')

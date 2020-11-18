@@ -1,4 +1,9 @@
+"""
+This module defines the Question Answering model.
+"""
+
 import copy
+
 import torch
 import transformers
 
@@ -52,6 +57,14 @@ class QA_model(torch.nn.Module):
         return mean_pooled(self.right, data)
 
     def loss(self, q, a, loss='bce'):
+        """
+        Takes batched data in the form (question, answer), 
+        where question and answer takes the form 
+        (token_idx, attention_mask).
+        
+        Returns the loss when matching question embeddings
+        with answer embeddings. 
+        """
         # q_emb, a_emb : B x D
         q_emb = self.generate_left(q)
         a_emb = self.generate_right(a)
@@ -69,10 +82,16 @@ class QA_model(torch.nn.Module):
         return l
 
     def save(self, path):
+        """
+        Saves the model, AND the architecture used, to facilitate loading.
+        """
         torch.save((self.state_dict(), self.architecture), path)
 
     @classmethod
     def load(cls, path):
+        """
+        Loads a model saved using model.save.
+        """
         state_dict, architecture = torch.load(path, map_location='cpu')
         model, tok = cls.init(architecture)
         model.load_state_dict(state_dict)
@@ -81,7 +100,8 @@ class QA_model(torch.nn.Module):
     @classmethod
     def init(cls, architecture):
         """
-        Initialize CT model from pretrained huggingface model.
+        Initialize QA model from pretrained huggingface model.
+        Returns the model AND a tokenizer.
         """
         tok = transformers.AutoTokenizer.from_pretrained(architecture)
         return cls(architecture), tok
