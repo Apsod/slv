@@ -35,9 +35,9 @@ or, if you have the API key in the environment variable KUNDO:
 slv get all --out /path/to/output/file
 ```
 
-For evaluation purposes, there is also a command `slv get split`, which separates the data in two: a training set, and a test set. The test set consists of all documents tagged with special tags (those supplied by Ingela, found in `slv.TAG_SET`), and the training set consists of all other documents.
+For evaluation purposes, there is also a command `slv get split`, which separates the data in two: a training set, and a test set. The test set consists of all documents tagged with special tags ([those supplied by Ingela](slv/__init__.py)), and the training set consists of all other documents.
 
-(See: [](slv/kundo.py) and [](slv/__main__.py))
+([Kundo API interface](slv/kundo.py))
 
 ### Training a Model
 
@@ -107,7 +107,7 @@ optional arguments:
   --out OUT
 ```
 
-(the embedding code can be found in [](slv/matcher/embed.py))
+([embedding code](slv/matcher/embed.py))
 
 ### Running the streamlit demo
 
