@@ -108,5 +108,5 @@ optional arguments:
 Given that you have a trained model, and embeddings, you can run the streamlit demo. The demo makes it possible to search for similar questions, and matching answers, to a given question (or vice versa: similar answers, and matching questions).
 
 ```bash
-streamlit run streamlit_app.py --model_path path/to/model.pt --embeddings path/to/embeddings.json
+streamlit run path/to/slv/matcher/streamlit_app.py --model_path path/to/model.pt --embeddings path/to/embeddings.json
 ```
