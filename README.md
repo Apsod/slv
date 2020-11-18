@@ -78,7 +78,7 @@ optional arguments:
 
 `--epochs`, `--batch_size`, `--lr`, `--weight_decay` are training hyperparameters: `epochs` are the number of passes over the training data we train for, `batch_size` is the size of each batch (limited by GPU memory), `lr` is the learning rate used by the optimizer, and `weight_decay` is the weight decay used by the optimizer. All these have sensible defaults, but you can experiment with them. 
 
-(The model definition can be found in [](slv/matcher/model.py), and the training code in [](slv/matcher/trainer.py))
+([model definition](slv/matcher/model.py), [training code](slv/matcher/trainer.py))
 
 ### Embedding questions and answers
 
