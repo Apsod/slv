@@ -37,6 +37,8 @@ slv get all --out /path/to/output/file
 
 For evaluation purposes, there is also a command `slv get split`, which separates the data in two: a training set, and a test set. The test set consists of all documents tagged with special tags (those supplied by Ingela, found in `slv.TAG_SET`), and the training set consists of all other documents.
 
+(See: [](slv/kundo.py) and [](slv/__main__.py))
+
 ### Training a Model
 
 To train a Question-Answering Retrieval model, use the `slv model train` command.
@@ -76,6 +78,8 @@ optional arguments:
 
 `--epochs`, `--batch_size`, `--lr`, `--weight_decay` are training hyperparameters: `epochs` are the number of passes over the training data we train for, `batch_size` is the size of each batch (limited by GPU memory), `lr` is the learning rate used by the optimizer, and `weight_decay` is the weight decay used by the optimizer. All these have sensible defaults, but you can experiment with them. 
 
+(The model definition can be found in [](slv/matcher/model.py), and the training code in [](slv/matcher/trainer.py))
+
 ### Embedding questions and answers
 
 To use a trained model to embed questions and answers, use the `slv model embed` command. 
@@ -102,6 +106,8 @@ optional arguments:
   --data_workers DATA_WORKERS
   --out OUT
 ```
+
+(the embedding code can be found in [](slv/matcher/embed.py))
 
 ### Running the streamlit demo
 
