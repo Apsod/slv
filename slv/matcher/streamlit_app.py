@@ -38,7 +38,7 @@ def get_embeddings():
             a_m.append(doc['answer']['embeddings'])
 
             questions.append(doc['question']['text'])
-            q_m.append(doc['question']['embedding'])
+            q_m.append(doc['question']['embeddings'])
 
     a_m = torch.tensor(a_m)
     q_m = torch.tensor(q_m)
