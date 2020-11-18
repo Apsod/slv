@@ -128,7 +128,7 @@ def train(model_path, train_path, epochs, batch_size, lr, weight_decay, device, 
             with torch.no_grad():
                 train_loss += loss.item()
                 it.set_description('loss: {:.1e}'.format(train_loss.mean))
-        torch.save(model.state_dict(), 'latest.pkl')
+        model.save('latest.pt')
 
         ## VALIDATION ##
         it = tqdm.tqdm(val_dl)
@@ -141,4 +141,4 @@ def train(model_path, train_path, epochs, batch_size, lr, weight_decay, device, 
             print('validation loss: {}'.format(val_loss.mean), file=sys.stderr)
             if loss < best_loss:
                 best_loss = loss
-                torch.save(model.state_dict(), 'best.pkl')
+                model.save('best.pt')

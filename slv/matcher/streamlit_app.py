@@ -9,8 +9,7 @@ from slv.matcher.model import QA_model
 
 parser = argparse.ArgumentParser('streamlit app')
 parser.add_argument('--model_path', required=True)
-parser.add_argument('--answer_embeddings', required=True)
-parser.add_argument('--question_embeddings', required=True)
+parser.add_argument('--embeddings', required=True)
 
 args = parser.parse_args()
 
@@ -33,15 +32,13 @@ def get_embeddings():
     questions = []
     q_m = []
 
-    with open(args.answer_embeddings, 'rt') as handle:
+    with open(args.embeddings, 'rt') as handle:
         for doc in map(json.loads, handle):
-            answers.append(doc['answer'])
-            a_m.append(doc['embedding'])
+            answers.append(doc['answer']['text'])
+            a_m.append(doc['answer']['embeddings'])
 
-    with open(args.question_embeddings, 'rt') as handle:
-        for doc in map(json.loads, handle):
-            questions.append(doc['question'])
-            q_m.append(doc['embedding'])
+            questions.append(doc['question']['text'])
+            q_m.append(doc['question']['embedding'])
 
     a_m = torch.tensor(a_m)
     q_m = torch.tensor(q_m)
