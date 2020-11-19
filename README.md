@@ -13,6 +13,8 @@ This repo contains helpers for extracting data from Kundo, and training Transfor
 
 ### Installation 
 
+(Tested on Ubuntu 20.04 and mac os x 10.13 with python 3.7)
+
 In this directory, install the package using pip: 
 
 ```bash
