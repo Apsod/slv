@@ -21,7 +21,9 @@ In this directory, install the package using pip:
 pip install . 
 ```
 
-This will install the package, and create an entry point `slv`.
+This will install the package, its requirements (transformers, tqdm, and pytorch), and create an entry point `slv`.
+
+(Note: If you want to train your own models on a GPU, you might need to follow the [pytorch installation instructions](https://pytorch.org/))
 
 ### Getting data from Kundo
 
