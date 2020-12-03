@@ -122,3 +122,4 @@ To run the demo, first install streamlit (`pip install streamlit`), then run the
 ```bash
 streamlit run path/to/slv/matcher/streamlit_app.py -- --model_path path/to/model.pt --embeddings path/to/embeddings.json
 ```
+([streamlit app code](slv/matcher/streamlit_app.py))
