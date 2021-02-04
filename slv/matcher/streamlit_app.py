@@ -1,3 +1,6 @@
+import os
+os.environ['TOKENIZERS_PARALLELISM']='false'
+
 import json
 import copy
 import argparse
@@ -13,8 +16,9 @@ parser.add_argument('--embeddings', required=True)
 
 args = parser.parse_args()
 
+import tokenizers
 
-@st.cache
+@st.cache(hash_funcs={tokenizers.Tokenizer: lambda _: None})
 def get_model():
     model, tokenizer = QA_model.load(args.model_path)
     model = model.eval()

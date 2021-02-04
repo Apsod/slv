@@ -9,13 +9,13 @@ import transformers
 
 def mean_pooled(model, data):
     ixs, att = data
-    outs, *_ = model(input_ids=ixs, attention_mask=att)
+    outs = model(input_ids=ixs, attention_mask=att)['last_hidden_state']
 
     mean_mask = torch.true_divide(
             att,
             att.sum(1, keepdims=True)
         )
-
+    
     return (outs * mean_mask.unsqueeze(2)).sum(1)
 
 
